@@ -1,0 +1,166 @@
+#------------------------------------------------------------------------------#
+# Descripción del script 
+#
+#                  Encuesta Demográfica y de Salud Familiar
+#
+#          .--.               
+#         |o_o |                      
+#         |:_/ |         ...............................................
+#        //   \ \            Automatización de la descarga de datos
+#       (|     | )       ...............................................         
+#       /'\_   _/`\   
+#      \___)=(___/
+#
+# Contenido
+#  1.- Atajos de teclado
+#  2.- Limpieza del entorno de trabajo
+#  3.- Instalar paquetes
+#  4.- Cargar librerias
+#  5.- Estructura de la función "endesdata"
+#  6.- Descarga de los archivos de datos (.dta o .sav)
+#  7.- Notas 
+#                                    
+#                            Jhon R. Ordoñez
+#                      (rolyordonezleon@gmail.com)
+#
+#                                                                      ><(((º>
+#------------------------------------------------------------------------------#
+
+
+# 1.- Atajos de teclado ---------------------------------------------------
+  # Ctrl + shift + n  : New Script
+  # ctrl + s          : Save
+  # ctrl + shift + r  : New Section
+  # ctrl + shift + p  : Show Command Palette
+  # Alt  + shift + k  : Keyboard Shortcuts Help
+  # ctrl + shift + m  : %>% 
+  # Alt  + q          : @
+  # Alt  + +          : ~
+  # Alt + l           : Collapse Fold
+  # Alt + shift + l   : Expand Fold
+  # Alt + 0           : Collapse All Folds
+  # Alt + shift + o   : Expand All Folds
+  # Theme: base16 Atelier Forest (Darck)
+  # ...
+  
+# 2.- Limpieza del entorno de trabajo -------------------------------------
+  setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+  remove(list = ls())
+  getwd(); dir()
+  
+# 3.- Instalar paquetes ---------------------------------------------------
+  if (!require("tidyverse"))    install.packages("tidyverse")
+  if (!require("haven"))        install.packages("haven")
+  if (!require("stringr"))      install.packages("stringr")
+  if (!require("rio"))          install.packages("rio")
+  if (!require("dplyr"))        install.packages("dplyr")
+  if (!require("labelled"))     install.packages("labelled")
+  if (!require("janitor"))      install.packages("janitor")
+  
+# 4.- Cargar librerias ----------------------------------------------------
+  library(tidyverse)
+  library(haven)
+  library(stringr)
+  library(rio)
+  library(dplyr)
+  library(labelled)
+  library(janitor)
+
+# 5.- Estructura de la función "endesdata" --------------------------------
+  endesdata <- function(periodo, codigo_modulo, base, guardar = FALSE, ruta = "", codificacion = NULL) {
+    options(timeout = max(3600, getOption("timeout")))
+    versiones <- matrix(c(2024,968,2023,910,2022,786,2021,760,2020,739,2019,691,2018,638,2017,605,2016,548,
+                          2015,504,2014,441,2013,407,2012,323,2011,290,2010,260,2009,238,2008,209,2007,194,
+                          2006,183,2005,150,2004,120,2000,32,1996,32), byrow = TRUE, ncol = 2)
+    cod <- versiones[versiones[,1] == periodo, 2]
+    if (length(cod) == 0) stop("Periodo no válido.")
+    url <- sprintf("https://proyectos.inei.gob.pe/iinei/srienaho/descarga/SPSS/%s-modulo%s.zip", cod, codigo_modulo)
+    tmp <- tempfile(); td <- tempdir()
+    tryCatch(download.file(url, tmp, mode = "wb", quiet = TRUE),error = function(e) stop("Error al descargar: ", url))
+    arch <- unzip(tmp, list = TRUE)$Name
+    arch_utf8 <- iconv(arch, from = "", to = "UTF-8", sub = "byte")
+    file <- arch_utf8[str_detect(tolower(arch_utf8), paste0(tolower(base), "\\.sav$"))]
+    if (length(file) == 0) stop("Base no encontrada en el ZIP.")
+    if (guardar) {
+      dir.create(file.path(ruta), showWarnings = FALSE, recursive = TRUE)
+      unzip(tmp, files = file, exdir = ruta)
+      message("Archivo guardado en: ", normalizePath(ruta))
+      return(invisible(NULL))}
+    data <- read_sav(unzip(tmp, files = file[1], exdir = td), encoding = codificacion)
+    colnames(data) <- toupper(colnames(data))
+    data
+  }
+  
+# 6.- Descarga de los archivos de datos (.dta o .sav)  --------------------
+  
+  # 6.1.- Archivo de datos "2017"
+    write_dta(clean_names(endesdata(2017, 66, "REC0111")), "2017_rec0111.dta")
+    write_dta(clean_names(endesdata(2017, 66, "REC91")),   "2017_rec91.dta")
+    write_dta(clean_names(endesdata(2017, 67, "RE223132")),"2017_re223132.dta")
+    write_dta(clean_names(endesdata(2017, 70, "REC42")),   "2017_rec42.dta")
+    write_dta(clean_names(endesdata(2017, 71, "RE516171")),"2017_re516171.dta")
+    write_dta(clean_names(endesdata(2017, 73, "REC84DV")), "2017_rec84dv.dta")
+    
+  # 6.2.- Archivo de datos "2018"
+    write_dta(clean_names(endesdata(2018, 66, "REC0111")), "2018_rec0111.dta")
+    write_dta(clean_names(endesdata(2018, 66, "REC91")),   "2018_rec91.dta")
+    write_dta(clean_names(endesdata(2018, 67, "RE223132")),"2018_re223132.dta")
+    write_dta(clean_names(endesdata(2018, 70, "REC42")),   "2018_rec42.dta")
+    write_dta(clean_names(endesdata(2018, 71, "RE516171")),"2018_re516171.dta")
+    write_dta(clean_names(endesdata(2018, 73, "REC84DV")), "2018_rec84dv.dta")
+    
+  # 6.3.- Archivo de datos "2019"
+    write_dta(clean_names(endesdata(2019, 66, "REC0111")), "2019_rec0111.dta")
+    write_dta(clean_names(endesdata(2019, 66, "REC91")),   "2019_rec91.dta")
+    write_dta(clean_names(endesdata(2019, 67, "RE223132")),"2019_re223132.dta")
+    write_dta(clean_names(endesdata(2019, 70, "REC42")),   "2019_rec42.dta")
+    write_dta(clean_names(endesdata(2019, 71, "RE516171")),"2019_re516171.dta")
+    write_dta(clean_names(endesdata(2019, 73, "REC84DV")), "2019_rec84dv.dta")
+    
+  # 6.4.- Archivo de datos "2020"
+    write_dta(clean_names(endesdata(2020, 1631, "REC0111")), "2020_rec0111.dta")
+    write_dta(clean_names(endesdata(2020, 1631, "REC91")),   "2020_rec91.dta")
+    write_dta(clean_names(endesdata(2020, 1632, "RE223132")),"2020_re223132.dta")
+    write_dta(clean_names(endesdata(2020, 1634, "REC42")),   "2020_rec42.dta")
+    write_dta(clean_names(endesdata(2020, 1635, "RE516171")),"2020_re516171.dta")
+    write_dta(clean_names(endesdata(2020, 1637, "REC84DV")), "2020_rec84dv.dta")
+
+  # 6.5.- Archivo de datos "2021"
+    write_dta(clean_names(endesdata(2021, 1631, "REC0111")), "2021_rec0111.dta")
+    write_dta(clean_names(endesdata(2021, 1631, "REC91")),   "2021_rec91.dta")
+    write_dta(clean_names(endesdata(2021, 1632, "RE223132")),"2021_re223132.dta")
+    write_dta(clean_names(endesdata(2021, 1634, "REC42")),   "2021_rec42.dta")
+    write_dta(clean_names(endesdata(2021, 1635, "RE516171")),"2021_re516171.dta")
+    write_dta(clean_names(endesdata(2021, 1637, "REC84DV")), "2021_rec84dv.dta")
+
+  # 6.6.- Archivo de datos "2022"
+    write_dta(clean_names(endesdata(2022, 1631, "REC0111")), "2022_rec0111.dta")
+    write_dta(clean_names(endesdata(2022, 1631, "REC91")),   "2022_rec91.dta")
+    write_dta(clean_names(endesdata(2022, 1632, "RE223132")),"2022_re223132.dta")
+    write_dta(clean_names(endesdata(2022, 1634, "REC42")),   "2022_rec42.dta")
+    write_dta(clean_names(endesdata(2022, 1635, "RE516171")),"2022_re516171.dta")
+    write_dta(clean_names(endesdata(2022, 1637, "REC84DV")), "2022_rec84dv.dta")
+
+  # 6.7.- Archivo de datos "2023"
+    write_dta(clean_names(endesdata(2023, 1631, "REC0111_2023")), "2023_rec0111.dta")
+    write_dta(clean_names(endesdata(2023, 1631, "REC91_2023")),   "2023_rec91.dta")
+    write_dta(clean_names(endesdata(2023, 1632, "RE223132_2023")),"2023_re223132.dta")
+    write_dta(clean_names(endesdata(2023, 1634, "REC42_2023")),   "2023_rec42.dta")
+    write_dta(clean_names(endesdata(2023, 1635, "RE516171_2023")),"2023_re516171.dta")
+    write_dta(clean_names(endesdata(2023, 1637, "REC84DV_2023")), "2023_rec84dv.dta")
+    
+  # 6.8.- Archivo de datos "2024"
+    write_dta(clean_names(endesdata(2024, 1631, "REC0111_2024")), "2024_rec0111.dta")
+    write_dta(clean_names(endesdata(2024, 1631, "REC91_2024")),   "2024_rec91.dta")
+    write_dta(clean_names(endesdata(2024, 1632, "RE223132_2024")),"2024_re223132.dta")
+    write_dta(clean_names(endesdata(2024, 1634, "REC42_2024")),   "2024_rec42.dta")
+    write_dta(clean_names(endesdata(2024, 1635, "RE516171_2024")),"2024_re516171.dta")
+    write_dta(clean_names(endesdata(2024, 1637, "REC84DV_2024")), "2024_rec84dv.dta")
+      
+# 7.- Notas ---------------------------------------------------------------
+  # Nota 1.- Esta versión simple es muy práctico y ayuda mucho cuando se trabaja con un pool de datos.
+  # Nota 2.- La versión completa de la automatización aún está en prueba.
+  # Nota 3.- Se deja a la imaginación del curios@ para explorar otras opciones de descarga más efectivas.
+  
+  
+  
