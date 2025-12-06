@@ -7,15 +7,37 @@
 	Construcción de indicadores de características del hogar, características de las mujeres,
 	indicadores de fecundidad, indicadores de planificación familiar, indicadores de salud materna.
 
-
 ## Clase 1
+
+> **Objetivos**
+>> Aprender a organizar el directorio de trabajo de un proyecto de investigación en general.
+>> Automatizar de la descarga de los archivos de datos de la endes.
+
+- :file_folder: Clase 1.- :point_right:[link](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 1")
  
 ## Clase 2
+
+> **Objetivos**
+>> ...
+>> ...
+ 
+- :file_folder: Clase 2.- :point_right:[link](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 2")
  
 ## Clase 3
 
+> **Objetivos**
+>> ...
+>> ...
 
+- :file_folder: Clase 2.- :point_right:[link](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 3")
 
+## Clase 4
+
+> **Objetivos**
+>> ...
+>> ...
+
+- :file_folder: Clase 2.- :point_right:[link](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 4")
 
 
 
