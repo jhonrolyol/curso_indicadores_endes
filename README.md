@@ -15,7 +15,7 @@
 
 >> Automatizar la descarga de los archivos de datos de la endes.
 
-- :file_folder: Archivos de la clase 1(:point_right:[Click aquí](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 1"))            
+- :file_folder: Archivos de la clase 1 (:point_right:[Click aquí](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 1"))            
  
 ## Clase 2
 
@@ -23,7 +23,7 @@
 >> ...
 >> ...
  
-- :file_folder: Archivos de la clase 2(:point_right:[Click aquí](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 2"))            
+- :file_folder: Archivos de la clase 2 (:point_right:[Click aquí](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 2"))            
  
 ## Clase 3
 
@@ -31,7 +31,7 @@
 >> ...
 >> ...
 
-- :file_folder: Archivos de la clase 3(:point_right:[Click aquí](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 3"))            
+- :file_folder: Archivos de la clase 3 (:point_right:[Click aquí](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 3"))            
  
 ## Clase 4
 
@@ -39,7 +39,7 @@
 >> ...
 >> ...
 
-- :file_folder: Archivos de la clase 4(:point_right:[Click aquí](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 4"))            
+- :file_folder: Archivos de la clase 4 (:point_right:[Click aquí](https://github.com/jhonrolyol/curso_indicadores_endes/tree/master/clase1 "Archivos de la clase 4"))            
  
 
 
